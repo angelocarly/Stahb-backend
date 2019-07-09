@@ -5,7 +5,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('stahb:server');
+var debug = require('debug')('stahb-backend:server');
 var http = require('http');
 
 /**
