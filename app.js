@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -5,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 var passport = require('passport');
+var bodyParser = require('body-parser');
 
 //Load mongoose models
 require('./models/User')
@@ -13,8 +16,7 @@ require('./models/Tab')
 //Load express routers
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
-require('dotenv').config();
+var tabRouter = require('./routes/tabs');
 
 var app = express();
 
@@ -22,27 +24,30 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+//Load libraries
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 //Express router setup
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/tabs', tabRouter);
 
 //Mongoose setup
 mongoose.connect(
   process.env.MONGO_URL,
-  { useNewUrlParser: true });
+  { useCreateIndex: true, useNewUrlParser: true });
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Mongodb connection error:'));
+db.on('error', console.error.bind(console, '[Mongoose] Connection error:'));
 db.once('open', function() {
-  console.info('Connected to mongodb')
+  console.info('[Mongoose] Connected to database')
 });
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

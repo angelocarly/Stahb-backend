@@ -20,7 +20,7 @@ passport.use(new LocalStrategy(
   }
 ))
 
-router.post('/login/', function(req, res, next){
+router.post('/login', function(req, res, next){
   if(!req.body.username || !req.body.password){
       return res.status(400).json(
         {message: 'Please fill out username and password'});
@@ -64,11 +64,12 @@ router.param('user', function(req, res, next, id) {
   });
 });
 
-router.get('/:user', function(req, res, next)
-{
-  res.json(req.user);
-})
+// router.get('/:user', function(req, res, next)
+// {
+//   res.json(req.user);
+// })
 
+//TODO remove
 router.post('/:user/weightEntries/', function(req, res, next){
   
   let user = new User(req.body);
