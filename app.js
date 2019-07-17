@@ -8,6 +8,7 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var bodyParser = require('body-parser');
+var cors = require('cors')
 
 //Load mongoose models
 require('./models/User')
@@ -26,6 +27,7 @@ app.set('view engine', 'jade');
 
 //Load libraries
 app.use(logger('dev'));
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
