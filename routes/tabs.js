@@ -20,15 +20,16 @@ router.get('/', function (req, res, next) {
 /* POST tab */
 router.post('/', auth, function (req, res, next) {
 
-  if (!req.body.artist || !req.body.song || !req.body.tab) {
+  if (!req.body.artist || !req.body.song || !req.body.tab || !req.body.tuning) {
     return res.status(400).json(
-      { message: 'Please fill out all fields (artist, song, tab)' });
+      { message: 'Please fill out all fields (artist, song, tab, tuning)' });
   }
 
   let tab = new Tab();
   tab.artist = req.body.artist;
   tab.song = req.body.song;
   tab.tab = req.body.tab;
+  tab.tuning = req.body.tuning;
   tab.author = req.user._id;
 
   tab.save(function (err) {

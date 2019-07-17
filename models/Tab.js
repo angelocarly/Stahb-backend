@@ -5,6 +5,7 @@ let TabSchema = new mongoose.Schema({
   song: String,
   author: { type: Schema.Types.ObjectId, ref: 'User' },
   tab: String,
+  tuning: String,
   created: { type: Date, default: Date.now }
 });
 
