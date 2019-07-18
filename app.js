@@ -18,6 +18,7 @@ require('./models/Tab')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var tabRouter = require('./routes/tabs');
+var favRouter = require('./routes/favorites');
 
 var app = express();
 
@@ -38,8 +39,9 @@ app.use(bodyParser.json());
 
 //Express router setup
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 app.use('/tabs', tabRouter);
+app.use('/user/fav', favRouter)
 
 //Mongoose setup
 mongoose.connect(

@@ -20,6 +20,7 @@ passport.use(new LocalStrategy(
   }
 ))
 
+//Login
 router.post('/login', function(req, res, next){
   if(!req.body.username || !req.body.password){
       return res.status(400).json(
@@ -35,6 +36,7 @@ router.post('/login', function(req, res, next){
   })(req, res, next);
 });
 
+//Register user
 router.post('/register/', function(req, res, next){
   
   if(!req.body.username || !req.body.password){
@@ -68,26 +70,6 @@ router.param('user', function(req, res, next, id) {
 // {
 //   res.json(req.user);
 // })
-
-//TODO remove
-router.post('/:user/weightEntries/', function(req, res, next){
-  
-  let user = new User(req.body);
-
-  user.save(function(err, weightEntries) {
-    if(err) return next(err);
-
-    req.user.weightEntries.push(weightEntry);
-    req.user.save(function(err, rec) {
-      if(err) return next(err);
-      res.json(weightEntry);
-    })
-  })
-  if(!req.body.weightEntry){
-      return res.status(400).json(
-        {message: 'No data entered'});
-  }
-});
 
 router.post('/checkusername/', function(req, res, next) {
   User.find({username: req.body.username}, 
