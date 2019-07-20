@@ -39,6 +39,7 @@ router.post('/', auth, function (req, res, next) {
   });
 });
 
+//GET tab by id
 router.get('/:tab', function (req, res, next) {
   res.json(req.tab);
 })

@@ -9,7 +9,10 @@ let UserSchema = new mongoose.Schema({
     },
     hash: String,
     salt: String,
-    favorites: [String]
+    favorites: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Tab'
+    }]
 })
 
 UserSchema.methods.setPassword = function (password) {
