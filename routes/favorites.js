@@ -26,28 +26,28 @@ router.get('/', auth, function (req, res, next) {
 })
 
 //Add a favorite to the user
-router.post('/', auth, function (req, res, next) {
+router.post('/:id', auth, function (req, res, next) {
 
-  if (!req.body.id) {
+  if (!req.params.id) {
     return res.status(400).json(
       { message: 'Please fill in the id' });
   }
 
   //Verify if the tab exists
-  Tab.find({ _id: req.body.id }, { _id: 1 }, function (err, tab) {
+  Tab.find({ _id: req.params.id }, { _id: 1 }, function (err, tab) {
     if (err) {
         return res.status(400).send(err)
     }
 
     //Ignore request if the tab does not exist
     if(tab.length === 0) {
-      return res.status(400).send({message: `No tabs exist with id ${req.body.id}`})
+      return res.status(400).send({message: `No tabs exist with id ${req.params.id}`})
     }
 
     //Add the id to the user's favorites
     User.updateOne(
       { _id: req.user._id },
-      { $addToSet: { favorites: req.body.id } },
+      { $addToSet: { favorites: req.params.id } },
       function (err, user) {
         if (err) return res.sendStatus(400)
 
@@ -61,15 +61,15 @@ router.post('/', auth, function (req, res, next) {
 })
 
 //Remove a favorite from the user
-router.delete('/', auth, function (req, res, next) {
-  if (!req.body.id) {
+router.delete('/:id', auth, function (req, res, next) {
+  if (!req.params.id) {
     return res.status(400).json(
       { message: 'Please fill out the id' });
   }
 
   User.updateOne(
     { _id: req.user._id },
-    { $pull: { favorites: req.body.id } },
+    { $pull: { favorites: req.params.id } },
     function (err, user) {
       if (err) return res.sendStatus(400)
       else return res.sendStatus(200)
